@@ -1,5 +1,7 @@
 ﻿using ProductManagementSample.Business.Abstract;
 using ProductManagementSample.Business.Constants;
+using ProductManagementSample.Core.Aspects.Autofac.Logging;
+using ProductManagementSample.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using ProductManagementSample.Core.Entities.Concrete;
 using ProductManagementSample.Core.Utilities.Results;
 using ProductManagementSample.Core.Utilities.Security.Hashing;
@@ -24,6 +26,7 @@ namespace ProductManagementSample.Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
         {
             byte[] passwordHash, passwordSalt;
@@ -41,6 +44,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<User> Update(UserForUpdateDto userForUpdateDto)
         {
             byte[] passwordHash, passwordSalt;
@@ -59,6 +63,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email).Data;

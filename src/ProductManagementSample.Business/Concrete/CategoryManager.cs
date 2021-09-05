@@ -45,7 +45,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
-
+        [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Update(Category category)
@@ -64,6 +64,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Delete(Category category)
         {

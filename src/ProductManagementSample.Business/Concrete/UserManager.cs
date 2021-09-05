@@ -1,4 +1,6 @@
 ﻿using ProductManagementSample.Business.Abstract;
+using ProductManagementSample.Core.Aspects.Autofac.Logging;
+using ProductManagementSample.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using ProductManagementSample.Core.Entities.Concrete;
 using ProductManagementSample.Core.Utilities.Results;
 using ProductManagementSample.DataAccess.Abstract;
@@ -19,6 +21,7 @@ namespace ProductManagementSample.Business.Concrete
             _userDal = userDal;
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IResult Add(User user)
         {
             _userDal.Add(user);
@@ -26,6 +29,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IResult Update(User user)
         {
             _userDal.Update(user);
@@ -33,6 +37,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);

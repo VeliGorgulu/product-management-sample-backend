@@ -28,9 +28,9 @@ namespace ProductManagementSample.Business.Concrete
             _productDal = productDal;
         }
 
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IProductService.Get")]
         [ValidationAspect(typeof(ProductValidator))]
-        [LogAspect(typeof(FileLogger))]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(
@@ -47,6 +47,7 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IProductService.Get")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(Product product)
@@ -64,7 +65,8 @@ namespace ProductManagementSample.Business.Concrete
 
             return new SuccessResult();
         }
-  
+
+        [LogAspect(typeof(FileLogger))]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Delete(Product product)
         {
