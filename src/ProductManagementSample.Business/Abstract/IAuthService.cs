@@ -15,7 +15,8 @@ namespace ProductManagementSample.Business.Abstract
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto);
         IDataResult<User> Update(UserForUpdateDto userForUpdateDto);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
-        IResult UserExists(string email);
+        IResult IsEmailExists(string email);
+        IResult IsIdExists(int id);
         IDataResult<AccessToken> CreateAccessToken(User user);
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProductManagementSample.DataAccess.Concrete.AdoNet
 {
-    public class ConnectionToSql : IConnection
+    public class ConnectionToSql
     {
         public SqlConnection Connect()
         {

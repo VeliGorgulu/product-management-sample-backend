@@ -1,5 +1,9 @@
 ﻿using ProductManagementSample.Business.Abstract;
+using ProductManagementSample.Business.BusinessAspects.Autofac;
+using ProductManagementSample.Business.ValidationRules.FluentValidation;
+using ProductManagementSample.Core.Aspects.Autofac.Caching;
 using ProductManagementSample.Core.Aspects.Autofac.Logging;
+using ProductManagementSample.Core.Aspects.Autofac.Validation;
 using ProductManagementSample.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using ProductManagementSample.Core.Entities.Concrete;
 using ProductManagementSample.Core.Utilities.Results;
@@ -12,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace ProductManagementSample.Business.Concrete
 {
+    
     public class UserManager : IUserService
     {
         IUserDal _userDal;
@@ -22,6 +27,9 @@ namespace ProductManagementSample.Business.Concrete
         }
 
         [LogAspect(typeof(FileLogger))]
+        [CacheRemoveAspect("IUserService.Get")]
+        [ValidationAspect(typeof(UserValidator))]
+        [SecuredOperation("admin,user.admin")]
         public IResult Add(User user)
         {
             _userDal.Add(user);
@@ -29,7 +37,11 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+
         [LogAspect(typeof(FileLogger))]
+        [CacheRemoveAspect("IUserService.Get")]
+        [ValidationAspect(typeof(UserValidator))]
+        [SecuredOperation("admin,user.admin")]
         public IResult Update(User user)
         {
             _userDal.Update(user);
@@ -38,6 +50,8 @@ namespace ProductManagementSample.Business.Concrete
         }
 
         [LogAspect(typeof(FileLogger))]
+        [CacheRemoveAspect("IUserService.Get")]
+        [SecuredOperation("admin,user.admin")]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
@@ -45,6 +59,8 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheAspect]
+        [SecuredOperation("admin,user.admin")]
         public IDataResult<List<User>> GetAll()
         {
             var data = _userDal.GetAll();

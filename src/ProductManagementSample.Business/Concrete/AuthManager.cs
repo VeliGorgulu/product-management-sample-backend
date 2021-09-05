@@ -80,14 +80,16 @@ namespace ProductManagementSample.Business.Concrete
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
         }
 
-        public IResult UserExists(string email)
+        public IResult IsEmailExists(string email)
         {
             var result = _userService.GetByEmail(email).Data;
+
             if (result != null)
             {
-                return new ErrorResult(Messages.UserAlreadyExists);
+                return new SuccessResult(Messages.UserAlreadyExists);
             }
-            return new SuccessResult();
+
+            return new ErrorResult();
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
@@ -95,6 +97,18 @@ namespace ProductManagementSample.Business.Concrete
             var claims = _userService.GetClaims(user).Data;
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+        }
+
+        public IResult IsIdExists(int id)
+        {
+            var result = _userService.GetById(id);
+        
+            if (result != null)
+            {
+                return new SuccessResult(Messages.UserAlreadyExists);
+            }
+
+            return new ErrorResult();
         }
     }
 }

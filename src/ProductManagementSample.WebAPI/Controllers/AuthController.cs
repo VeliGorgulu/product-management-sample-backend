@@ -23,13 +23,13 @@ namespace ProductManagementSample.WebAPI.Controllers
         [HttpPost("login")]
         public ActionResult Login(UserForLoginDto userForLoginDto)
         {
-            var userToLogin = _authService.Login(userForLoginDto);
-            if (!userToLogin.Success)
+            var loginResult = _authService.Login(userForLoginDto);
+            if (!loginResult.Success)
             {
-                return BadRequest(userToLogin.Message);
+                return BadRequest(loginResult.Message);
             }
 
-            var result = _authService.CreateAccessToken(userToLogin.Data);
+            var result = _authService.CreateAccessToken(loginResult.Data);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,10 +41,10 @@ namespace ProductManagementSample.WebAPI.Controllers
         [HttpPost("register")]
         public ActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
-            if (!userExists.Success)
+            var emailExists = _authService.IsEmailExists(userForRegisterDto.Email);
+            if (emailExists.Success)
             {
-                return BadRequest(userExists.Message);
+                return BadRequest(emailExists.Message);
             }
 
             var registerResult = _authService.Register(userForRegisterDto);
@@ -60,14 +60,21 @@ namespace ProductManagementSample.WebAPI.Controllers
         [HttpPost("update")]
         public ActionResult Update(UserForUpdateDto userForUpdateDto)
         {
-            var userExists = _authService.UserExists(userForUpdateDto.Email);
-            if (!userExists.Success)
+            var idExists = _authService.IsIdExists(userForUpdateDto.Id);
+            var emailExists = _authService.IsEmailExists(userForUpdateDto.Email);
+
+            if (!idExists.Success)
             {
-                return BadRequest(userExists.Message);
+                return BadRequest(idExists.Message);
             }
 
-            var registerResult = _authService.Update(userForUpdateDto);
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            if (!emailExists.Success)
+            {
+                return BadRequest(emailExists.Message);
+            }
+
+            var updateResult = _authService.Update(userForUpdateDto);
+            var result = _authService.CreateAccessToken(updateResult.Data);
             if (result.Success)
             {
                 return Ok(result);
