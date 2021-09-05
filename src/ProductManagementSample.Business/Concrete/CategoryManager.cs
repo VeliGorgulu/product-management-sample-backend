@@ -2,7 +2,9 @@
 using ProductManagementSample.Business.BusinessAspects.Autofac;
 using ProductManagementSample.Business.ValidationRules.FluentValidation;
 using ProductManagementSample.Core.Aspects.Autofac.Caching;
+using ProductManagementSample.Core.Aspects.Autofac.Logging;
 using ProductManagementSample.Core.Aspects.Autofac.Validation;
+using ProductManagementSample.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using ProductManagementSample.Core.Utilities.Business;
 using ProductManagementSample.Core.Utilities.Results;
 using ProductManagementSample.DataAccess.Abstract;
@@ -25,6 +27,7 @@ namespace ProductManagementSample.Business.Concrete
             _categoryDal = categoryDal;
         }
 
+        [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(CategoryValidator))]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Add(Category category)

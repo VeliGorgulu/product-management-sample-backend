@@ -20,10 +20,10 @@ namespace ProductManagementSample.Core.Aspects.Autofac.Transaction
                     invocation.Proceed();
                     transactionScope.Complete();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     transactionScope.Dispose();
-                    throw;
+                    throw new Exception(e.Message);
                 }
             }
         }

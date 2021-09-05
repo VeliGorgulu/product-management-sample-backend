@@ -2,7 +2,9 @@
 using ProductManagementSample.Business.BusinessAspects.Autofac;
 using ProductManagementSample.Business.ValidationRules.FluentValidation;
 using ProductManagementSample.Core.Aspects.Autofac.Caching;
+using ProductManagementSample.Core.Aspects.Autofac.Logging;
 using ProductManagementSample.Core.Aspects.Autofac.Validation;
+using ProductManagementSample.Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
 using ProductManagementSample.Core.Utilities.Business;
 using ProductManagementSample.Core.Utilities.Results;
 using ProductManagementSample.DataAccess.Abstract;
@@ -28,6 +30,7 @@ namespace ProductManagementSample.Business.Concrete
 
         [CacheRemoveAspect("IProductService.Get")]
         [ValidationAspect(typeof(ProductValidator))]
+        [LogAspect(typeof(FileLogger))]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(
